@@ -1,5 +1,5 @@
 echo on 
-dnf install -y rpm-build ninja-build
+sudo dnf install -y rpm-build ninja-build
 sudo ln -s /usr/bin/ninja-build /usr/bin/ninja
 
 RPMTOPDIR=~/rpmbuild
