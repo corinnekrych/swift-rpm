@@ -4,14 +4,16 @@ sudo ln -s /usr/bin/ninja-build /usr/bin/ninja
 
 RPMTOPDIR=~/rpmbuild
 mkdir -p $RPMTOPDIR/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
-TAG=2.2-SNAPSHOT-2015-12-10-a
+TAG=2.2-SNAPSHOT-2016-01-06-a
 VER=2.2
-REL=SNAPSHOT20151210a
+REL=SNAPSHOT20160106a
 
 wget https://github.com/apple/swift/archive/swift-${TAG}.tar.gz -O swift.tar.gz
 mv swift.tar.gz $RPMTOPDIR/SOURCES/swift.tar.gz
 wget https://github.com/apple/swift-corelibs-foundation/archive/swift-${TAG}.tar.gz -O corelibs-foundation.tar.gz
 mv corelibs-foundation.tar.gz $RPMTOPDIR/SOURCES/
+wget https://github.com/apple/swift-integration-tests/archive/swift-${TAG}.tar.gz -O swift-integration-tests.tar.gz
+mv swift-integration-tests.tar.gz $RPMTOPDIR/SOURCES/
 wget https://github.com/apple/swift-corelibs-xctest/archive/swift-${TAG}.tar.gz -O corelibs-xctest.tar.gz
 mv corelibs-xctest.tar.gz $RPMTOPDIR/SOURCES/
 wget https://github.com/apple/swift-clang/archive/swift-${TAG}.tar.gz -O clang.tar.gz
