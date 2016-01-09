@@ -24,6 +24,7 @@ Build apple swift compiler from source
 %prep
 rm -fr *
 gzip -dc ../SOURCES/swift.tar.gz | tar -xvvf -
+gzip -dc ../SOURCES/swift-integration-tests.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/clang.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/cmark.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/corelibs-foundation.tar.gz | tar -xvvf -
@@ -33,6 +34,7 @@ gzip -dc ../SOURCES/lldb.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/llvm.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/package-manager.tar.gz | tar -xvvf -
 mv swift-swift-%{tag} swift
+mv swift-integration-tests-swift-%{tag} swift-integration-tests
 mv swift-clang-swift-%{tag} clang
 mv swift-cmark-0.22.0 cmark
 mv swift-corelibs-foundation-swift-%{tag} swift-corelibs-foundation
@@ -55,9 +57,12 @@ rm -fr %{buildroot}/swift-%{ver}-%{rel}-fedora23.tar.gz
 %{_libdir}/*
 %{_usr}/lib/*
 %{_mandir}/*
+%{_datarootdir}/*
 
 %clean
-rm -rf %{buildroot}
+echo "DATAROOTDIR==" %{_datarootdir}
+echo "BUILDROOT=" %{buildroot}
+#rm -rf %{buildroot}
 
 #The changelog is built automatically from Git history
 %changelog
