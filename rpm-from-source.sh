@@ -4,9 +4,9 @@ sudo ln -s /usr/bin/ninja-build /usr/bin/ninja
 
 RPMTOPDIR=~/rpmbuild
 mkdir -p $RPMTOPDIR/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
-TAG=2.2-SNAPSHOT-2016-01-06-a
+TAG=2.2-SNAPSHOT-2016-01-11-a
 VER=2.2
-REL=SNAPSHOT20160106a
+REL=SNAPSHOT20160111a
 
 wget https://github.com/apple/swift/archive/swift-${TAG}.tar.gz -O swift.tar.gz
 mv swift.tar.gz $RPMTOPDIR/SOURCES/swift.tar.gz
