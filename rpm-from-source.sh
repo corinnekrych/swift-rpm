@@ -26,7 +26,7 @@ wget https://github.com/apple/swift-llvm/archive/swift-${TAG}.tar.gz -O llvm.tar
 mv llvm.tar.gz $RPMTOPDIR/SOURCES/
 wget https://github.com/apple/swift-llbuild/archive/swift-${TAG}.tar.gz -O llbuild.tar.gz
 mv llbuild.tar.gz $RPMTOPDIR/SOURCES/
-wget https://github.com/apple/swift-cmark/archive/0.22.0.tar.gz -O cmark.tar.gz
+wget https://github.com/apple/swift-cmark/archive/swift-${TAG}.tar.gz -O cmark.tar.gz
 mv cmark.tar.gz $RPMTOPDIR/SOURCES/
 
 sed -e "s/%{ver}/$VER/" -e "s/%{rel}/$REL/" -e "s/%{tag}/$TAG/" swift.spec > $RPMTOPDIR/SPECS/swift.spec
