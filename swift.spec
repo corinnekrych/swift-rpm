@@ -36,7 +36,7 @@ gzip -dc ../SOURCES/package-manager.tar.gz | tar -xvvf -
 mv swift-swift-%{tag} swift
 mv swift-integration-tests-swift-%{tag} swift-integration-tests
 mv swift-clang-swift-%{tag} clang
-mv swift-cmark-0.22.0 cmark
+mv swift-cmark-swift-%{tag} cmark
 mv swift-corelibs-foundation-swift-%{tag} swift-corelibs-foundation
 mv swift-corelibs-xctest-swift-%{tag} swift-corelibs-xctest
 mv swift-llbuild-swift-%{tag} llbuild
