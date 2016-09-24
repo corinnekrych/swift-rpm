@@ -43,6 +43,10 @@ mv swift-llbuild-swift-%{tag} llbuild
 mv swift-lldb-swift-%{tag} lldb
 mv swift-llvm-swift-%{tag} llvm
 mv swift-package-manager-swift-%{tag} swiftpm
+git clone https://github.com/apple/swift-corelibs-libdispatch swift-corelibs-libdispatch
+pushd swift-corelibs-libdispatch
+git submodule init; git submodule update
+popd
 
 %install
 sed -e s/lib\${LLVM_LIBDIR_SUFFIX}/lib64/g lldb/scripts/CMakeLists.txt > CMakeLists.txt.tmp && mv CMakeLists.txt.tmp lldb/scripts/CMakeLists.txt
