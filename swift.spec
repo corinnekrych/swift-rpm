@@ -43,6 +43,8 @@ mv swift-llbuild-swift-%{tag} llbuild
 mv swift-lldb-swift-%{tag} lldb
 mv swift-llvm-swift-%{tag} llvm
 mv swift-package-manager-swift-%{tag} swiftpm
+# Explicit checkout of libdispatch so we can also initialize
+# the submodules
 git clone https://github.com/apple/swift-corelibs-libdispatch swift-corelibs-libdispatch
 pushd swift-corelibs-libdispatch
 git submodule init; git submodule update
@@ -51,6 +53,9 @@ popd
 %install
 sed -e s/lib\${LLVM_LIBDIR_SUFFIX}/lib64/g lldb/scripts/CMakeLists.txt > CMakeLists.txt.tmp && mv CMakeLists.txt.tmp lldb/scripts/CMakeLists.txt
 cd swift
+# Modification of the build
+sed -i.bak "s/^test/#test/g" ./utils/build-presets.ini
+sed -i.bak "s/^validation-test/#validation-test/g" ./utils/build-presets.ini
 ./utils/build-script --preset=buildbot_linux install_destdir=%{buildroot} installable_package=%{buildroot}/swift-%{ver}-%{rel}-fedora23.tar.gz
 rm -fr %{buildroot}/swift-%{ver}-%{rel}-fedora23.tar.gz
 
