@@ -61,8 +61,9 @@ cd swift
 # at the end.
 sed -i.bak "s/^test/#test/g" ./utils/build-presets.ini
 sed -i.bak "s/^validation-test/#validation-test/g" ./utils/build-presets.ini
-./utils/build-script --preset=buildbot_linux install_destdir=%{buildroot} installable_package=%{buildroot}/swift-%{ver}-%{rel}-fedora23.tar.gz
-rm -fr %{buildroot}/swift-%{ver}-%{rel}-fedora23.tar.gz
+./utils/build-script --preset=buildbot_linux install_destdir=%{buildroot} installable_package=%{buildroot}/swift-%{ver}-%{rel}-fedora24.tar.gz
+# Commented out because I haven't figured out what the purpose of doing so is.
+#rm -fr %{buildroot}/swift-%{ver}-%{rel}-fedora24.tar.gz
 
 %files
 %defattr(-, root, root)
