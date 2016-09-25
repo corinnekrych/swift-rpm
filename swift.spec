@@ -53,7 +53,12 @@ popd
 %install
 sed -e s/lib\${LLVM_LIBDIR_SUFFIX}/lib64/g lldb/scripts/CMakeLists.txt > CMakeLists.txt.tmp && mv CMakeLists.txt.tmp lldb/scripts/CMakeLists.txt
 cd swift
-# Modification of the build
+# Modification of the build-presets.ini to comment out:
+#	* test
+#	* validation-test
+# because those are currently failing. The other test 
+# is left in place and Swift builds and runs successfully
+# at the end.
 sed -i.bak "s/^test/#test/g" ./utils/build-presets.ini
 sed -i.bak "s/^validation-test/#validation-test/g" ./utils/build-presets.ini
 ./utils/build-script --preset=buildbot_linux install_destdir=%{buildroot} installable_package=%{buildroot}/swift-%{ver}-%{rel}-fedora23.tar.gz
