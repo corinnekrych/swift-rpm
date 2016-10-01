@@ -9,6 +9,7 @@ Source0: swift.tar.gz
 Source1: clang.tar.gz
 Source2: cmark.tar.gz
 Source3: corelibs-foundation.tar.gz
+#Source4: corelibs-libdispatch.tar.gz
 Source4: corelibs-xctest.tar.gz
 Source5: llbuild.tar.gz
 Source6: lldb.tar.gz
@@ -62,8 +63,9 @@ cd swift
 sed -i.bak "s/^test/#test/g" ./utils/build-presets.ini
 sed -i.bak "s/^validation-test/#validation-test/g" ./utils/build-presets.ini
 ./utils/build-script --preset=buildbot_linux install_destdir=%{buildroot} installable_package=%{buildroot}/swift-%{ver}-%{rel}-fedora24.tar.gz
-# Commented out because I haven't figured out what the purpose of doing so is.
-#rm -fr %{buildroot}/swift-%{ver}-%{rel}-fedora24.tar.gz
+# Moving the tar file out of the way
+cp %{buildroot}/swift-%{ver}-%{rel}-fedora24.tar.gz ~
+rm %{buildroot}/swift-%{ver}-%{rel}-fedora24.tar.gz
 
 %files
 %defattr(-, root, root)
