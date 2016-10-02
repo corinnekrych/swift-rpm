@@ -51,7 +51,7 @@ pushd swift-corelibs-libdispatch
 git submodule init; git submodule update
 popd
 
-%install
+%build
 sed -e s/lib\${LLVM_LIBDIR_SUFFIX}/lib64/g lldb/scripts/CMakeLists.txt > CMakeLists.txt.tmp && mv CMakeLists.txt.tmp lldb/scripts/CMakeLists.txt
 cd swift
 # Modification of the build-presets.ini to comment out:
