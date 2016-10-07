@@ -18,6 +18,7 @@ Source8: package-manager.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{ver}-%{rel}
 
 BuildRequires: clang,libicu-devel,gcc-c++,cmake,libuuid-devel,libedit-devel,swig,pkgconfig,libbsd-devel,libxml2-devel,libsqlite3x-devel,python-devel,ninja-build
+Requires: clang,libicu-devel
 
 %description
 Build apple swift compiler from source
