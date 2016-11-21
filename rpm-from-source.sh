@@ -1,12 +1,12 @@
 echo on 
-sudo dnf install -y rpm-build ninja-build clang libicu-devel gcc-c++ cmake libuuid-devel libedit-devel swig pkgconfig libbsd-devel libxml2-devel libsqlite3x-devel python-devel
+sudo dnf install -y rpm-build ninja-build clang libicu-devel gcc-c++ cmake libuuid-devel libedit-devel swig pkgconfig libbsd-devel libxml2-devel libsqlite3x-devel python-devel autoconf automake libtool libcurl-devel
 sudo ln -s /usr/bin/ninja-build /usr/bin/ninja
 
 RPMTOPDIR=~/rpmbuild
 mkdir -p $RPMTOPDIR/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
-TAG=2.2-SNAPSHOT-2016-01-06-a
-VER=2.2
-REL=SNAPSHOT20160106a
+TAG=3.0-RELEASE
+VER=3.0
+REL=RELEASE3.0
 
 wget https://github.com/apple/swift/archive/swift-${TAG}.tar.gz -O swift.tar.gz
 mv swift.tar.gz $RPMTOPDIR/SOURCES/swift.tar.gz
