@@ -9,6 +9,8 @@ Source0: swift.tar.gz
 Source1: clang.tar.gz
 Source2: cmark.tar.gz
 Source3: corelibs-foundation.tar.gz
+# Explicitly commented out here as we get it from
+# git below
 #Source4: corelibs-libdispatch.tar.gz
 Source4: corelibs-xctest.tar.gz
 Source5: llbuild.tar.gz
@@ -45,10 +47,27 @@ mv swift-llbuild-swift-%{tag} llbuild
 mv swift-lldb-swift-%{tag} lldb
 mv swift-llvm-swift-%{tag} llvm
 mv swift-package-manager-swift-%{tag} swiftpm
+# Explicit checkout of ninja which we need to do, apparently
+# starting with 3.1
+git clone https://github.com/ninja-build/ninja.git ../BUILD/ninja
+pushd ../BUILD/ninja
+git checkout release
+popd
+
+# XYZZY - test for me
+pushd ../BUILD
+rm -rf swift
+git clone git@github.com:tachoknight/swift.git swift
+pushd swift
+git checkout xyzzy-swift-3.1-RELEASE
+popd
+popd
+
 # Explicit checkout of libdispatch so we can also initialize
 # the submodules
 git clone https://github.com/apple/swift-corelibs-libdispatch swift-corelibs-libdispatch
 pushd swift-corelibs-libdispatch
+git checkout swift-3.1-branch
 git submodule init; git submodule update
 popd
 
@@ -63,10 +82,10 @@ cd swift
 # at the end.
 sed -i.bak "s/^test/#test/g" ./utils/build-presets.ini
 sed -i.bak "s/^validation-test/#validation-test/g" ./utils/build-presets.ini
-./utils/build-script --preset=buildbot_linux install_destdir=%{buildroot} installable_package=%{buildroot}/swift-%{ver}-%{rel}-fedora24.tar.gz
+./utils/build-script --preset=buildbot_linux install_destdir=%{buildroot} installable_package=%{buildroot}/swift-%{ver}-%{rel}-fedora25.tar.gz
 # Moving the tar file out of the way
-cp %{buildroot}/swift-%{ver}-%{rel}-fedora24.tar.gz ~
-rm %{buildroot}/swift-%{ver}-%{rel}-fedora24.tar.gz
+cp %{buildroot}/swift-%{ver}-%{rel}-fedora25.tar.gz ~
+rm %{buildroot}/swift-%{ver}-%{rel}-fedora25.tar.gz
 
 %files
 %defattr(-, root, root)
