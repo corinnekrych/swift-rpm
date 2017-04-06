@@ -4,9 +4,9 @@ sudo ln -s /usr/bin/ninja-build /usr/bin/ninja
 
 RPMTOPDIR=~/rpmbuild
 mkdir -p $RPMTOPDIR/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
-TAG=3.0-RELEASE
-VER=3.0
-REL=RELEASE3.0
+TAG=3.1-RELEASE
+VER=3.1
+REL=RELEASE3.1
 
 wget https://github.com/apple/swift/archive/swift-${TAG}.tar.gz -O swift.tar.gz
 mv swift.tar.gz $RPMTOPDIR/SOURCES/swift.tar.gz
@@ -28,6 +28,7 @@ wget https://github.com/apple/swift-llbuild/archive/swift-${TAG}.tar.gz -O llbui
 mv llbuild.tar.gz $RPMTOPDIR/SOURCES/
 wget https://github.com/apple/swift-cmark/archive/swift-${TAG}.tar.gz -O cmark.tar.gz
 mv cmark.tar.gz $RPMTOPDIR/SOURCES/
-
+wget https://github.com/ninja-build/ninja/archive/v1.7.2.tar.gz -O ninja.tar.gz
+mv ninja.tar.gz $RPMTOPDIR/SOURCES/
 sed -e "s/%{ver}/$VER/" -e "s/%{rel}/$REL/" -e "s/%{tag}/$TAG/" swift.spec > $RPMTOPDIR/SPECS/swift.spec
 rpmbuild -ba $RPMTOPDIR/SPECS/swift.spec	

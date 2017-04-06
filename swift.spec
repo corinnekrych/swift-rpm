@@ -35,6 +35,8 @@ gzip -dc ../SOURCES/llbuild.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/lldb.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/llvm.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/package-manager.tar.gz | tar -xvvf -
+gzip -dc ../SOURCES/ninja.tar.gz | tar -xvvf -
+mv ninja-1.7.2 ninja
 mv swift-swift-%{tag} swift
 mv swift-integration-tests-swift-%{tag} swift-integration-tests
 mv swift-clang-swift-%{tag} clang
@@ -80,7 +82,7 @@ rm %{buildroot}/swift-%{ver}-%{rel}-fedora24.tar.gz
 %clean
 echo "DATAROOTDIR==" %{_datarootdir}
 echo "BUILDROOT=" %{buildroot}
-#rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 #The changelog is built automatically from Git history
 %changelog
