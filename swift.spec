@@ -57,7 +57,7 @@ popd
 # XYZZY - test for me
 pushd ../BUILD
 rm -rf swift
-git clone git@github.com:tachoknight/swift.git swift
+git clone https://github.com/tachoknight/swift swift
 pushd swift
 git checkout xyzzy-swift-3.1-RELEASE
 popd
