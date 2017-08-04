@@ -1,0 +1,12 @@
+# Swift 4
+
+## New dependencies
+* libatomic
+* libBlocksRuntime
+
+## Requirements
+* To be compiled on Fedora 25 because gcc-7 is not supported yet on Fedora 26
+* libBlocksRuntime installed from RPM or local archive
+
+# Runtime
+* Environment variables C_INCLUDE_PATH and CPLUS_INCLUDE_PATH needed because https://bugs.swift.org/browse/SR-5524
