@@ -1,0 +1,10 @@
+--- TaskPool.h	2017-09-04 08:40:35.492688931 +0430
++++ TaskPool-Fedora26.h	2017-09-04 09:05:44.239028096 +0430
+@@ -28,6 +28,7 @@
+ 
+ #include <cassert>
+ #include <cstdint>
++#include <functional>
+ #include <future>
+ #include <list>
+ #include <queue>

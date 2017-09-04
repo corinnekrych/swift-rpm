@@ -6,7 +6,7 @@ Swift RPM for Fedora.
 sudo dnf install libbsd python gcc-c++ clang
 sudo rpm -Uvh swift-3.1-RELEASE3.1.x86_64.rpm
 ```
-Tested on Fedora 22, 23, 24, 25 - 64 bits.
+Tested on Fedora 22, 23, 24, 25 & 26- 64 bits.
 
 ## Run a RPM build
 

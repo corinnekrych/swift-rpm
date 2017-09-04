@@ -22,6 +22,7 @@ wget https://github.com/apple/swift-package-manager/archive/swift-${TAG}.tar.gz 
 mv package-manager.tar.gz $RPMTOPDIR/SOURCES/
 wget https://github.com/apple/swift-lldb/archive/swift-${TAG}.tar.gz -O lldb.tar.gz
 mv lldb.tar.gz $RPMTOPDIR/SOURCES/
+cp -rf lldb-fedora26.patch $RPMTOPDIR/SOURCES/
 wget https://github.com/apple/swift-llvm/archive/swift-${TAG}.tar.gz -O llvm.tar.gz
 mv llvm.tar.gz $RPMTOPDIR/SOURCES/
 wget https://github.com/apple/swift-llbuild/archive/swift-${TAG}.tar.gz -O llbuild.tar.gz

@@ -45,6 +45,7 @@ mv swift-corelibs-foundation-swift-%{tag} swift-corelibs-foundation
 mv swift-corelibs-xctest-swift-%{tag} swift-corelibs-xctest
 mv swift-llbuild-swift-%{tag} llbuild
 mv swift-lldb-swift-%{tag} lldb
+source /etc/os-release  && if [[ "$VERSION_ID" == "26" ]] ; then cd ../BUILD/lldb/include/lldb/Utility/ && cp -rf TaskPool.h TaskPool.h.bak && patch -p0 < ../../../../../SOURCES/lldb-fedora26.patch; fi;
 mv swift-llvm-swift-%{tag} llvm
 mv swift-package-manager-swift-%{tag} swiftpm
 # Explicit checkout of libdispatch so we can also initialize
