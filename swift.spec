@@ -34,8 +34,8 @@ gzip -dc ../SOURCES/corelibs-xctest.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/llbuild.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/lldb.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/llvm.tar.gz | tar -xvvf -
-gzip -dc ../SOURCES/package-manager.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/ninja.tar.gz | tar -xvvf -
+gzip -dc ../SOURCES/package-manager.tar.gz | tar -xvvf -
 mv ninja-1.7.2 ninja
 mv swift-swift-%{tag} swift
 mv swift-integration-tests-swift-%{tag} swift-integration-tests
@@ -45,7 +45,9 @@ mv swift-corelibs-foundation-swift-%{tag} swift-corelibs-foundation
 mv swift-corelibs-xctest-swift-%{tag} swift-corelibs-xctest
 mv swift-llbuild-swift-%{tag} llbuild
 mv swift-lldb-swift-%{tag} lldb
-source /etc/os-release  && if [[ "$VERSION_ID" == "26" ]] ; then cd ../BUILD/lldb/include/lldb/Utility/ && cp -rf TaskPool.h TaskPool.h.bak && patch -p0 < ../../../../../SOURCES/lldb-fedora26.patch; fi;
+source /etc/os-release  && if [[ "$VERSION_ID" == "26" ]] ; then \
+cd ../BUILD/lldb/include/lldb/Utility/ && cp -rf TaskPool.h TaskPool.h.bak \
+&& patch -p0 < ../../../../../SOURCES/lldb-fedora26.patch && cd - ; fi;
 mv swift-llvm-swift-%{tag} llvm
 mv swift-package-manager-swift-%{tag} swiftpm
 # Explicit checkout of libdispatch so we can also initialize
