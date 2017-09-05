@@ -1,12 +1,12 @@
 echo on 
-sudo dnf install -y rpm-build ninja-build clang libicu-devel gcc-c++ cmake libuuid-devel libedit-devel swig pkgconfig libbsd-devel libxml2-devel libsqlite3x-devel python-devel autoconf automake libtool libcurl-devel
+sudo dnf install -y rpm-build libatomic ninja-build clang libicu-devel gcc-c++ cmake libuuid-devel libedit-devel swig pkgconfig libbsd-devel libxml2-devel libsqlite3x-devel python-devel autoconf automake libtool libcurl-devel python2-sphinx
 sudo ln -s /usr/bin/ninja-build /usr/bin/ninja
 
 RPMTOPDIR=~/rpmbuild
 mkdir -p $RPMTOPDIR/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
-TAG=3.1-RELEASE
-VER=3.1
-REL=RELEASE3.1
+TAG=4.0-DEVELOPMENT-SNAPSHOT-2017-09-04-a
+VER=4.0
+REL=DEVELOPMENT4.0
 
 wget https://github.com/apple/swift/archive/swift-${TAG}.tar.gz -O swift.tar.gz
 mv swift.tar.gz $RPMTOPDIR/SOURCES/swift.tar.gz
@@ -22,6 +22,7 @@ wget https://github.com/apple/swift-package-manager/archive/swift-${TAG}.tar.gz 
 mv package-manager.tar.gz $RPMTOPDIR/SOURCES/
 wget https://github.com/apple/swift-lldb/archive/swift-${TAG}.tar.gz -O lldb.tar.gz
 mv lldb.tar.gz $RPMTOPDIR/SOURCES/
+cp -rf lldb-fedora26.patch $RPMTOPDIR/SOURCES/
 wget https://github.com/apple/swift-llvm/archive/swift-${TAG}.tar.gz -O llvm.tar.gz
 mv llvm.tar.gz $RPMTOPDIR/SOURCES/
 wget https://github.com/apple/swift-llbuild/archive/swift-${TAG}.tar.gz -O llbuild.tar.gz
