@@ -56,6 +56,9 @@ git clone https://github.com/apple/swift-corelibs-libdispatch swift-corelibs-lib
 pushd swift-corelibs-libdispatch
 git submodule init; git submodule update
 popd
+pushd swift/tools/SourceKit/lib/Support
+sed -i -e 's|Block.h|src/BlocksRuntime/Block.h|g' Concurrency-libdispatch.cpp
+popd
 
 %build
 sed -e s/lib\${LLVM_LIBDIR_SUFFIX}/lib64/g lldb/scripts/CMakeLists.txt > CMakeLists.txt.tmp && mv CMakeLists.txt.tmp lldb/scripts/CMakeLists.txt
