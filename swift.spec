@@ -54,20 +54,12 @@ pushd ../BUILD/ninja
 git checkout release
 popd
 
-# XYZZY - test for me
-pushd ../BUILD
-rm -rf swift
-git clone https://github.com/tachoknight/swift swift
-pushd swift
-git checkout xyzzy-swift-3.1-RELEASE
-popd
-popd
 
 # Explicit checkout of libdispatch so we can also initialize
 # the submodules
 git clone https://github.com/apple/swift-corelibs-libdispatch swift-corelibs-libdispatch
 pushd swift-corelibs-libdispatch
-git checkout swift-3.1-branch
+git checkout swift-4.0-branch
 git submodule init; git submodule update
 popd
 
@@ -82,10 +74,19 @@ cd swift
 # at the end.
 sed -i.bak "s/^test/#test/g" ./utils/build-presets.ini
 sed -i.bak "s/^validation-test/#validation-test/g" ./utils/build-presets.ini
-./utils/build-script --preset=buildbot_linux install_destdir=%{buildroot} installable_package=%{buildroot}/swift-%{ver}-%{rel}-fedora25.tar.gz
-# Moving the tar file out of the way
-cp %{buildroot}/swift-%{ver}-%{rel}-fedora25.tar.gz ~
-rm %{buildroot}/swift-%{ver}-%{rel}-fedora25.tar.gz
+
+# Under Fedora 26 std::bind is not included via the headers in the following
+# file, so we need to manually 'patch' it with sed to include <functional>
+# Note this is fixed in Apple's master branch, so this will not be necessary
+# in subsequent versions
+sed -i '/#include <vector>/a #include <functional>' ../lldb/include/lldb/Utility/TaskPool.h
+
+# This is the line that actually does the build. Grab a coffee or tea because this is going
+# to take awhile
+./utils/build-script --preset=buildbot_linux install_destdir=%{buildroot} installable_package=%{buildroot}/swift-%{ver}-%{rel}-fedora26.tar.gz
+# Moving the tar file out of the way in case we want to examine it
+cp %{buildroot}/swift-%{ver}-%{rel}-fedora26.tar.gz ~
+rm %{buildroot}/swift-%{ver}-%{rel}-fedora26.tar.gz
 
 %files
 %defattr(-, root, root)
