@@ -1,12 +1,12 @@
 # swift-rpm
-Swift RPM for Fedora.
+Swift RPM for Fedora. - Updated to Swift 4.0
 
 ## Install Swift RPM
 ```bash
 sudo dnf install libbsd python gcc-c++ clang
-sudo rpm -Uvh swift-2.2-SNAPSHOT20151210a.x86_64.rpm
+sudo rpm -Uvh swift-4.0-RELEASE4.0.x86_64.rpm
 ```
-Tested on Fedora 22 and 23, 64 bits.
+Tested on Fedora 26, 64-bit.
 
 ## Run a RPM build
 
