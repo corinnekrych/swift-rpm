@@ -49,12 +49,6 @@ mv swift-llbuild-swift-%{tag} llbuild
 mv swift-lldb-swift-%{tag} lldb
 mv swift-llvm-swift-%{tag} llvm
 mv swift-package-manager-swift-%{tag} swiftpm
-# Explicit checkout of ninja which we need to do, apparently
-# starting with 3.1
-git clone https://github.com/ninja-build/ninja.git ../BUILD/ninja
-pushd ../BUILD/ninja
-git checkout release
-popd
 
 
 # Explicit checkout of libdispatch so we can also initialize

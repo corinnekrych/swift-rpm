@@ -5,7 +5,7 @@ sudo ln -s /usr/bin/ninja-build /usr/bin/ninja
 # We need to manually get and deal with the blocks runtime
 # TODO: Add check for whether files are already there
 pushd /tmp
-git clone git://github.com/tachoknight/blocksruntime
+git clone https://github.com/mackyle/blocksruntime
 cd /tmp/blocksruntime
 ./buildlib
 ./checktests
@@ -17,9 +17,9 @@ popd
 RPMTOPDIR=~/rpmbuild
 mkdir -p $RPMTOPDIR/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 
-TAG=4.0-RELEASE
-VER=4.0
-REL=RELEASE4.0
+TAG=4.0.2-RELEASE
+VER=4.0.2
+REL=RELEASE4.0.2
 
 
 wget https://github.com/apple/swift/archive/swift-${TAG}.tar.gz -O swift.tar.gz
