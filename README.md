@@ -7,7 +7,7 @@ sudo dnf install libbsd python gcc-c++ clang
 
 sudo rpm -Uvh swift-4.0.2-RELEASE4.0.2.x86_64.rpm
 ```
-Tested on Fedora 26, 64-bit.
+Tested on Fedora 26 and 27, 64-bit.
 
 
 ## Run a RPM build
