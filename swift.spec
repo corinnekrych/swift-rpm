@@ -9,6 +9,8 @@ Source0: swift.tar.gz
 Source1: clang.tar.gz
 Source2: cmark.tar.gz
 Source3: corelibs-foundation.tar.gz
+# Explicitly commented out here as we get it from
+# git below
 #Source4: corelibs-libdispatch.tar.gz
 Source4: corelibs-xctest.tar.gz
 Source5: llbuild.tar.gz
@@ -47,10 +49,13 @@ mv swift-llbuild-swift-%{tag} llbuild
 mv swift-lldb-swift-%{tag} lldb
 mv swift-llvm-swift-%{tag} llvm
 mv swift-package-manager-swift-%{tag} swiftpm
+
+
 # Explicit checkout of libdispatch so we can also initialize
 # the submodules
 git clone https://github.com/apple/swift-corelibs-libdispatch swift-corelibs-libdispatch
 pushd swift-corelibs-libdispatch
+git checkout swift-4.0-branch
 git submodule init; git submodule update
 popd
 
@@ -65,10 +70,39 @@ cd swift
 # at the end.
 sed -i.bak "s/^test/#test/g" ./utils/build-presets.ini
 sed -i.bak "s/^validation-test/#validation-test/g" ./utils/build-presets.ini
-./utils/build-script --preset=buildbot_linux install_destdir=%{buildroot} installable_package=%{buildroot}/swift-%{ver}-%{rel}-fedora24.tar.gz
-# Moving the tar file out of the way
-cp %{buildroot}/swift-%{ver}-%{rel}-fedora24.tar.gz ~
-rm %{buildroot}/swift-%{ver}-%{rel}-fedora24.tar.gz
+
+# Under Fedora 26 std::bind is not included via the headers in the following
+# file, so we need to manually 'patch' it with sed to include <functional>
+# Note this is fixed in Apple's master branch, so this will not be necessary
+# in subsequent versions
+sed -i '/#include <vector>/a #include <functional>' ../lldb/include/lldb/Utility/TaskPool.h
+
+# Under Fedora 27, xlocale.h is no longer available, per:
+# https://sourceware.org/glibc/wiki/Release/2.26#Removal_of_.27xlocale.h.27
+sed -i 's/#include <xlocale.h>/\/\/#include <xlocale.h>/' ./stdlib/public/stubs/Stubs.cpp
+sed -i 's/#include <xlocale.h>/\/\/#include <xlocale.h>/' ./stdlib/public/SDK/os/os_trace_blob.c
+sed -i 's/#include <xlocale.h>/\/\/#include <xlocale.h>/' ../swift-corelibs-foundation/CoreFoundation/Base.subproj/CFInternal.h
+sed -i 's/#include <xlocale.h>/\/\/#include <xlocale.h>/' ../swift-corelibs-foundation/CoreFoundation/String.subproj/CFStringDefaultEncoding.h
+sed -i 's/#include <xlocale.h>/\/\/#include <xlocale.h>/' ../swift-corelibs-foundation/CoreFoundation/String.subproj/CFStringEncodings.c
+
+
+# Under Fedora 27, SIGUNUSED (31) has been removed, so going to use SIGSYS, which
+# was defined previously as the same (31) and has the comment "Bad System Call"
+sed -i 's/SIGUNUSED/SIGSYS/' ../llbuild/lib/BuildSystem/LaneBasedExecutionQueue.cpp
+sed -i 's/SIGUNUSED/SIGSYS/' ../llbuild/lib/Commands/NinjaBuildCommand.cpp
+sed -i 's/SIGUNUSED/SIGSYS/' ../swiftpm/Sources/Basic/Process.swift
+
+#
+# We're finished with our modifications, so now we're going to actually build Swift, et al.
+#
+
+# This is the line that actually does the build. Grab a coffee or tea because this is going
+# to take awhile
+./utils/build-script --preset=buildbot_linux install_destdir=%{buildroot} installable_package=%{buildroot}/swift-%{ver}-%{rel}-fedora26.tar.gz
+
+# Moving the tar file out of the way in case we want to examine it
+cp %{buildroot}/swift-%{ver}-%{rel}-fedora26.tar.gz ~
+rm %{buildroot}/swift-%{ver}-%{rel}-fedora26.tar.gz
 
 %files
 %defattr(-, root, root)

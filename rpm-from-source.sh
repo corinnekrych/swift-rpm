@@ -1,12 +1,26 @@
 echo on 
-sudo dnf install -y rpm-build ninja-build clang libicu-devel gcc-c++ cmake libuuid-devel libedit-devel swig pkgconfig libbsd-devel libxml2-devel libsqlite3x-devel python-devel autoconf automake libtool libcurl-devel
+sudo dnf install -y rpm-build ninja-build clang libicu-devel gcc-c++ cmake libuuid-devel libedit-devel swig pkgconfig libbsd-devel libxml2-devel libsqlite3x-devel python-devel autoconf automake libtool libcurl-devel libatomic
 sudo ln -s /usr/bin/ninja-build /usr/bin/ninja
+
+# We need to manually get and deal with the blocks runtime
+# TODO: Add check for whether files are already there
+pushd /tmp
+git clone https://github.com/mackyle/blocksruntime
+cd /tmp/blocksruntime
+./buildlib
+./checktests
+sudo ./installlib
+sudo ln -s /usr/local/lib/libBlocksRuntime.a /usr/lib/libBlocksRuntime.a
+sudo ln -s /usr/local/include/Block.h /usr/include/Block.h
+popd
 
 RPMTOPDIR=~/rpmbuild
 mkdir -p $RPMTOPDIR/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
-TAG=3.1-RELEASE
-VER=3.1
-REL=RELEASE3.1
+
+TAG=4.0.2-RELEASE
+VER=4.0.2
+REL=RELEASE4.0.2
+
 
 wget https://github.com/apple/swift/archive/swift-${TAG}.tar.gz -O swift.tar.gz
 mv swift.tar.gz $RPMTOPDIR/SOURCES/swift.tar.gz
