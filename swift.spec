@@ -77,9 +77,29 @@ sed -i.bak "s/^validation-test/#validation-test/g" ./utils/build-presets.ini
 # in subsequent versions
 sed -i '/#include <vector>/a #include <functional>' ../lldb/include/lldb/Utility/TaskPool.h
 
+# Under Fedora 27, xlocale.h is no longer available, per:
+# https://sourceware.org/glibc/wiki/Release/2.26#Removal_of_.27xlocale.h.27
+sed -i 's/#include <xlocale.h>/\/\/#include <xlocale.h>/' ./stdlib/public/stubs/Stubs.cpp
+sed -i 's/#include <xlocale.h>/\/\/#include <xlocale.h>/' ./stdlib/public/SDK/os/os_trace_blob.c
+sed -i 's/#include <xlocale.h>/\/\/#include <xlocale.h>/' ../swift-corelibs-foundation/CoreFoundation/Base.subproj/CFInternal.h
+sed -i 's/#include <xlocale.h>/\/\/#include <xlocale.h>/' ../swift-corelibs-foundation/CoreFoundation/String.subproj/CFStringDefaultEncoding.h
+sed -i 's/#include <xlocale.h>/\/\/#include <xlocale.h>/' ../swift-corelibs-foundation/CoreFoundation/String.subproj/CFStringEncodings.c
+
+
+# Under Fedora 27, SIGUNUSED (31) has been removed, so going to use SIGSYS, which
+# was defined previously as the same (31) and has the comment "Bad System Call"
+sed -i 's/SIGUNUSED/SIGSYS/' ../llbuild/lib/BuildSystem/LaneBasedExecutionQueue.cpp
+sed -i 's/SIGUNUSED/SIGSYS/' ../llbuild/lib/Commands/NinjaBuildCommand.cpp
+sed -i 's/SIGUNUSED/SIGSYS/' ../swiftpm/Sources/Basic/Process.swift
+
+#
+# We're finished with our modifications, so now we're going to actually build Swift, et al.
+#
+
 # This is the line that actually does the build. Grab a coffee or tea because this is going
 # to take awhile
 ./utils/build-script --preset=buildbot_linux install_destdir=%{buildroot} installable_package=%{buildroot}/swift-%{ver}-%{rel}-fedora26.tar.gz
+
 # Moving the tar file out of the way in case we want to examine it
 cp %{buildroot}/swift-%{ver}-%{rel}-fedora26.tar.gz ~
 rm %{buildroot}/swift-%{ver}-%{rel}-fedora26.tar.gz
