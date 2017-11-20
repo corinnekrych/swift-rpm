@@ -16,3 +16,15 @@ To build a new tag version of swift edit rpm-from-source.sh and change TAG, REL 
 ```bash
 ./rpm-from-source.sh
 ```
+
+# REPL issues
+## Can't import Foundation
+If you get errors about building SwiftGlibc when importing Foundation in the REPL, start it with
+
+```swift -I /usr/local/swift/usr/lib/swift/clang/include/```
+
+(If you have Swift installed in ```/usr/local/```), otherwise
+
+```swift -I/swift/usr/lib/swift/clang/include/```
+
+This is tracked [here](https://bugs.swift.org/browse/SR-3648).
