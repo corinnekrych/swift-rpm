@@ -98,11 +98,12 @@ sed -i 's/SIGUNUSED/SIGSYS/' ../swiftpm/Sources/Basic/Process.swift
 
 # This is the line that actually does the build. Grab a coffee or tea because this is going
 # to take awhile
-./utils/build-script --preset=buildbot_linux install_destdir=%{buildroot} installable_package=%{buildroot}/swift-%{ver}-%{rel}-fedora26.tar.gz
+./utils/build-script --preset=buildbot_linux install_destdir=%{buildroot} installable_package=%{buildroot}/swift-%{ver}-%{rel}-fedora%{fedora-ver}.tar.gz
 
-# Moving the tar file out of the way in case we want to examine it
-cp %{buildroot}/swift-%{ver}-%{rel}-fedora26.tar.gz ~
-rm %{buildroot}/swift-%{ver}-%{rel}-fedora26.tar.gz
+# If you would like to keep the tgz file, uncomment the 
+# next two lines
+#cp %{buildroot}/swift-%{ver}-%{rel}-fedora%{fedora-ver}.tar.gz ~
+#rm %{buildroot}/swift-%{ver}-%{rel}-fedora%{fedora-ver}.tar.gz
 
 %files
 %defattr(-, root, root)
