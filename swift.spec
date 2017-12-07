@@ -101,9 +101,10 @@ sed -i 's/SIGUNUSED/SIGSYS/' ../swiftpm/Sources/Basic/Process.swift
 ./utils/build-script --preset=buildbot_linux install_destdir=%{buildroot} installable_package=%{buildroot}/swift-%{ver}-%{rel}-fedora%{fedora-ver}.tar.gz
 
 # If you would like to keep the tgz file, uncomment the 
-# next two lines
+# next line
 #cp %{buildroot}/swift-%{ver}-%{rel}-fedora%{fedora-ver}.tar.gz ~
-#rm %{buildroot}/swift-%{ver}-%{rel}-fedora%{fedora-ver}.tar.gz
+
+rm %{buildroot}/swift-%{ver}-%{rel}-fedora%{fedora-ver}.tar.gz
 
 %files
 %defattr(-, root, root)
