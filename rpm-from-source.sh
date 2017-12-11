@@ -18,16 +18,19 @@ sudo dnf install -y rpm-build ninja-build clang libicu-devel gcc-c++ cmake libuu
 sudo ln -s /usr/bin/ninja-build /usr/bin/ninja
 
 # We need to manually get and deal with the blocks runtime
-# TODO: Add check for whether files are already there
-pushd /tmp
-git clone https://github.com/mackyle/blocksruntime
-cd /tmp/blocksruntime
-./buildlib
-./checktests
-sudo ./installlib
-sudo ln -s /usr/local/lib/libBlocksRuntime.a /usr/lib/libBlocksRuntime.a
-sudo ln -s /usr/local/include/Block.h /usr/include/Block.h
-popd
+# We have already built this; if the static lib or header is missing,
+# we'll build it again
+if [ ! -f /usr/lib/libBlocksRuntime.a ] || [ ! -f /usr/include/Block.h ]; then
+	pushd /tmp
+	git clone https://github.com/mackyle/blocksruntime
+	cd /tmp/blocksruntime
+	./buildlib
+	./checktests
+	sudo ./installlib
+	sudo ln -s /usr/local/lib/libBlocksRuntime.a /usr/lib/libBlocksRuntime.a
+	sudo ln -s /usr/local/include/Block.h /usr/include/Block.h
+	popd
+fi
 
 RPMTOPDIR=~/rpmbuild
 mkdir -p $RPMTOPDIR/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
