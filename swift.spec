@@ -9,12 +9,12 @@ Source0: swift.tar.gz
 Source1: clang.tar.gz
 Source2: cmark.tar.gz
 Source3: corelibs-foundation.tar.gz
+Source4: corelibs-libdispatch.tar.gz
+Source5: corelibs-xctest.tar.gz
+Source6: llbuild.tar.gz
 # Explicitly commented out here as we get it from
 # git below
-#Source4: corelibs-libdispatch.tar.gz
-Source4: corelibs-xctest.tar.gz
-Source5: llbuild.tar.gz
-Source6: lldb.tar.gz
+#Source7: lldb.tar.gz
 Source7: llvm.tar.gz
 Source8: package-manager.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{ver}-%{rel}
@@ -32,9 +32,10 @@ gzip -dc ../SOURCES/swift-integration-tests.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/clang.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/cmark.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/corelibs-foundation.tar.gz | tar -xvvf -
+gzip -dc ../SOURCES/corelibs-libdispatch.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/corelibs-xctest.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/llbuild.tar.gz | tar -xvvf -
-gzip -dc ../SOURCES/lldb.tar.gz | tar -xvvf -
+#gzip -dc ../SOURCES/lldb.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/llvm.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/package-manager.tar.gz | tar -xvvf -
 gzip -dc ../SOURCES/ninja.tar.gz | tar -xvvf -
@@ -44,52 +45,30 @@ mv swift-integration-tests-swift-%{tag} swift-integration-tests
 mv swift-clang-swift-%{tag} clang
 mv swift-cmark-swift-%{tag} cmark
 mv swift-corelibs-foundation-swift-%{tag} swift-corelibs-foundation
+mv swift-corelibs-libdispatch-swift-%{tag} swift-corelibs-libdispatch
 mv swift-corelibs-xctest-swift-%{tag} swift-corelibs-xctest
 mv swift-llbuild-swift-%{tag} llbuild
-mv swift-lldb-swift-%{tag} lldb
+#mv swift-lldb-swift-%{tag} lldb
 mv swift-llvm-swift-%{tag} llvm
 mv swift-package-manager-swift-%{tag} swiftpm
 
+# swift-lldb uses stable, not master
+git clone https://github.com/apple/swift-lldb.git lldb
+pushd lldb
+git checkout stable
+popd
 
 # Explicit checkout of libdispatch so we can also initialize
 # the submodules
-git clone https://github.com/apple/swift-corelibs-libdispatch swift-corelibs-libdispatch
-pushd swift-corelibs-libdispatch
-git checkout swift-4.0-branch
-git submodule init; git submodule update
-popd
+#git clone https://github.com/apple/swift-corelibs-libdispatch swift-corelibs-libdispatch
+#pushd swift-corelibs-libdispatch
+#git checkout swift-4.1-branch
+#git submodule init; git submodule update
+#popd
 
 %build
-sed -e s/lib\${LLVM_LIBDIR_SUFFIX}/lib64/g lldb/scripts/CMakeLists.txt > CMakeLists.txt.tmp && mv CMakeLists.txt.tmp lldb/scripts/CMakeLists.txt
+#sed -e s/lib\${LLVM_LIBDIR_SUFFIX}/lib64/g lldb/scripts/CMakeLists.txt > CMakeLists.txt.tmp && mv CMakeLists.txt.tmp lldb/scripts/CMakeLists.txt
 cd swift
-# Modification of the build-presets.ini to comment out:
-#	* test
-#	* validation-test
-# because those are currently failing. The other test 
-# is left in place and Swift builds and runs successfully
-# at the end.
-sed -i.bak "s/^test/#test/g" ./utils/build-presets.ini
-sed -i.bak "s/^validation-test/#validation-test/g" ./utils/build-presets.ini
-
-# Under Fedora 26 std::bind is not included via the headers in the following
-# file, so we need to manually 'patch' it with sed to include <functional>
-# Note this is fixed in Apple's master branch, so this will not be necessary
-# in subsequent versions
-sed -i '/#include <vector>/a #include <functional>' ../lldb/include/lldb/Utility/TaskPool.h
-
-# Under Fedora 27, xlocale.h is no longer available, per:
-# https://sourceware.org/glibc/wiki/Release/2.26#Removal_of_.27xlocale.h.27
-sed -i 's/#include <xlocale.h>/\/\/#include <xlocale.h>/' ./stdlib/public/stubs/Stubs.cpp
-sed -i 's/#include <xlocale.h>/\/\/#include <xlocale.h>/' ./stdlib/public/SDK/os/os_trace_blob.c
-sed -i 's/#include <xlocale.h>/\/\/#include <xlocale.h>/' ../swift-corelibs-foundation/CoreFoundation/Base.subproj/CFInternal.h
-sed -i 's/#include <xlocale.h>/\/\/#include <xlocale.h>/' ../swift-corelibs-foundation/CoreFoundation/String.subproj/CFStringDefaultEncoding.h
-sed -i 's/#include <xlocale.h>/\/\/#include <xlocale.h>/' ../swift-corelibs-foundation/CoreFoundation/String.subproj/CFStringEncodings.c
-
-
-# Under Fedora 27, SIGUNUSED (31) has been removed, so going to use SIGSYS, which
-# was defined previously as the same (31) and has the comment "Bad System Call"
-sed -i 's/SIGUNUSED/SIGSYS/' ../llbuild/lib/BuildSystem/LaneBasedExecutionQueue.cpp
-sed -i 's/SIGUNUSED/SIGSYS/' ../llbuild/lib/Commands/NinjaBuildCommand.cpp
 sed -i 's/SIGUNUSED/SIGSYS/' ../swiftpm/Sources/Basic/Process.swift
 
 #
@@ -98,7 +77,7 @@ sed -i 's/SIGUNUSED/SIGSYS/' ../swiftpm/Sources/Basic/Process.swift
 
 # This is the line that actually does the build. Grab a coffee or tea because this is going
 # to take awhile
-./utils/build-script --preset=buildbot_linux install_destdir=%{buildroot} installable_package=%{buildroot}/swift-%{ver}-%{rel}-fedora%{fedora-ver}.tar.gz
+./utils/build-script --preset=buildbot_linux,no_test install_destdir=%{buildroot} installable_package=%{buildroot}/swift-%{ver}-%{rel}-fedora%{fedora-ver}.tar.gz
 
 # If you would like to keep the tgz file, uncomment the 
 # next line
@@ -110,7 +89,6 @@ rm %{buildroot}/swift-%{ver}-%{rel}-fedora%{fedora-ver}.tar.gz
 %defattr(-, root, root)
 %{_bindir}/*
 %{_includedir}/*
-%{_libdir}/*
 %{_usr}/lib/*
 %{_mandir}/*
 %{_datarootdir}/*
