@@ -4,33 +4,19 @@
 # want to build, and must match what Apple has
 # made available at https://github.com/apple/swift/releases
 # (but note *not* to prepend "swift-" to it)
-TAG=4.0.3-RELEASE
-VER=4.0.3
+TAG=4.1-RELEASE
+VER=4.1
 # This is what decorates the package name
-REL=RELEASE4.0.3
+REL=RELEASE4.1
 
 
 # We use /etc/os-release to determine the version of Fedora we're on
 # which will be passed to the final rpm file
 source /etc/os-release
 
-sudo dnf install -y rpm-build ninja-build clang libicu-devel gcc-c++ cmake libuuid-devel libedit-devel swig pkgconfig libbsd-devel libxml2-devel libsqlite3x-devel python-devel autoconf automake libtool libcurl-devel libatomic
+sudo dnf install -y rpm-build ninja-build clang libicu-devel gcc-c++ cmake libuuid-devel libedit-devel swig pkgconfig libbsd-devel libxml2-devel libsqlite3x-devel python-devel autoconf automake libtool libcurl-devel libatomic libblocksruntime-static
 sudo ln -s /usr/bin/ninja-build /usr/bin/ninja
 
-# We need to manually get and deal with the blocks runtime
-# We have already built this; if the static lib or header is missing,
-# we'll build it again
-if [ ! -f /usr/lib/libBlocksRuntime.a ] || [ ! -f /usr/include/Block.h ]; then
-	pushd /tmp
-	git clone https://github.com/mackyle/blocksruntime
-	cd /tmp/blocksruntime
-	./buildlib
-	./checktests
-	sudo ./installlib
-	sudo ln -s /usr/local/lib/libBlocksRuntime.a /usr/lib/libBlocksRuntime.a
-	sudo ln -s /usr/local/include/Block.h /usr/include/Block.h
-	popd
-fi
 
 RPMTOPDIR=~/rpmbuild
 mkdir -p $RPMTOPDIR/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
