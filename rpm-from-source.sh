@@ -4,10 +4,10 @@
 # want to build, and must match what Apple has
 # made available at https://github.com/apple/swift/releases
 # (but note *not* to prepend "swift-" to it)
-TAG=4.1-RELEASE
-VER=4.1
+TAG=4.1.1-RELEASE
+VER=4.1.1
 # This is what decorates the package name
-REL=RELEASE4.1
+REL=RELEASE4.1.1
 
 
 # We use /etc/os-release to determine the version of Fedora we're on
