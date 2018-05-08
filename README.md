@@ -1,13 +1,13 @@
 # swift-rpm
-Swift RPM for Fedora. - Updated to Swift 4.1
+Swift RPM for Fedora. - Updated to Swift 4.1.1
 
 ## Install Swift RPM
 ```bash
 ./rpm-from-source.sh
 
-sudo rpm -Uvh swift-4.1-RELEASE4.1.x86_64.rpm
+sudo rpm -Uvh swift-4.1.1-RELEASE4.1.1.x86_64.rpm
 ```
-Tested on Fedora 27, 28 (Beta) and Rawhide, 64-bit.
+Tested on Fedora 27, 28, and Rawhide, 64-bit.
 
 ## Run a RPM build
 
