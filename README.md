@@ -25,4 +25,3 @@ To build a new tag version of swift edit rpm-from-source.sh and change TAG, REL 
 ./rpm-from-source.sh
 ```
 
-
