@@ -1,7 +1,16 @@
 # swift-rpm
-Swift RPM for Fedora. - Updated to Swift 4.1.1
+Swift RPM for Fedora.
+
 
 ## Install Swift RPM
+Swift can now be installed directly via DNF:
+
+``sudo dnf install swift-lang``
+
+This will work for Fedora 28 and later.
+## Pre-DNF version
+If you're interested in trying out the latest beta version of Swift, check out the other branches in this repository. 
+
 ```bash
 ./rpm-from-source.sh
 
@@ -16,5 +25,3 @@ To build a new tag version of swift edit rpm-from-source.sh and change TAG, REL 
 ./rpm-from-source.sh
 ```
 
-## Latest-n-Greatest Version
-If you're interested in trying out the latest beta version of Swift, check out the other branches in this repository. 
